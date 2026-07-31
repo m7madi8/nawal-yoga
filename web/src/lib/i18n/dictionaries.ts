@@ -3,6 +3,7 @@ import { dahabCopy } from "./dahab-copy";
 import { haifaCopy } from "./haifa-copy";
 import { iceBathCopy } from "./ice-bath-copy";
 import { natureChocolateCopy } from "./nature-chocolate-copy";
+import { soundHealingCopy } from "./sound-healing-copy";
 
 export type Locale = "en" | "ar";
 
@@ -424,6 +425,7 @@ export const dictionaries = {
     ...haifaCopy.en,
     ...iceBathCopy.en,
     ...natureChocolateCopy.en,
+    ...soundHealingCopy.en,
   },
   ar: {
     ...core.ar,
@@ -432,6 +434,7 @@ export const dictionaries = {
     ...haifaCopy.ar,
     ...iceBathCopy.ar,
     ...natureChocolateCopy.ar,
+    ...soundHealingCopy.ar,
   },
 };
 

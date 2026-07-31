@@ -5,6 +5,7 @@ import { dictionaries } from "@/lib/i18n/dictionaries";
 import { EventDetail } from "@/components/experience/EventDetail";
 import { IceBathPage } from "@/components/ice-bath/IceBathPage";
 import { NatureChocolatePage } from "@/components/nature-chocolate/NatureChocolatePage";
+import { SoundHealingPage } from "@/components/sound-healing/SoundHealingPage";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -14,6 +15,12 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  if (slug === "sound-healing") {
+    return {
+      title: "Nawal Omar",
+      description: dictionaries.en.events_sh_meta_desc,
+    };
+  }
   if (slug === "ice-bath") {
     return {
       title: "Nawal Omar",
@@ -38,6 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function EventPage({ params }: Props) {
   const { slug } = await params;
   if (!eventSlugs.includes(slug as EventSlug)) notFound();
+  if (slug === "sound-healing") return <SoundHealingPage />;
   if (slug === "ice-bath") return <IceBathPage />;
   if (slug === "nature-chocolate") return <NatureChocolatePage />;
   return <EventDetail slug={slug as EventSlug} />;
