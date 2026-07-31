@@ -1,0 +1,3 @@
+"use client";
+
+export { Hero as HeroSection } from "@/components/hero/Hero";

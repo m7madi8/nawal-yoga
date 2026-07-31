@@ -1,0 +1,220 @@
+@import "tailwindcss";
+
+:root {
+  /* Primary surface — single theme color */
+  --color-bone: #fafaf8;
+  --color-mist: #fafaf8;
+  --color-stone: #fafaf8;
+  --color-sand: #fafaf8;
+  --color-olive: #8a7355;
+  --color-ink: #2c2925;
+  --color-brass: #9c8568;
+  --text-soft: rgba(44, 41, 37, 0.68);
+  --border-soft: rgba(44, 41, 37, 0.12);
+  --overlay-warm: rgba(250, 250, 248, 0.92);
+  --ease-sanctuary: cubic-bezier(0.22, 1, 0.36, 1);
+  --background: #fafaf8;
+  --foreground: var(--color-ink);
+
+  /* Typography scale */
+  --fs-hero: clamp(2.6rem, 7.2vw, 5.25rem);
+  --fs-h1: clamp(2.1rem, 4.8vw, 3.75rem);
+  --fs-h2: clamp(1.75rem, 3.6vw, 2.75rem);
+  --fs-h3: clamp(1.25rem, 2vw, 1.65rem);
+  --fs-body: 1.0625rem;
+  --fs-body-lg: 1.125rem;
+  --lh-tight: 1.08;
+  --lh-snug: 1.25;
+  --lh-body: 1.7;
+  --tracking-display: -0.02em;
+  --tracking-label: 0.22em;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-olive: var(--color-olive);
+  --color-stone: var(--color-stone);
+  --color-bone: var(--color-bone);
+  --color-ink: var(--color-ink);
+  --color-brass: var(--color-brass);
+  --color-mist: var(--color-mist);
+  --color-sand: var(--color-sand);
+  --font-sans: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-display: "Fraunces", "Times New Roman", serif;
+  --font-arabic: "Tajawal", "Tahoma", sans-serif;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+body {
+  background: #fafaf8;
+  color: var(--color-ink);
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-optical-sizing: auto;
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: var(--lh-body);
+  letter-spacing: 0.005em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Light grain — avoid SVG feTurbulence (heavy on scroll/forms, especially mobile) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  z-index: 9998;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  background-size: 120px 120px;
+}
+
+@media (prefers-reduced-motion: reduce), (max-width: 767px) {
+  body::before {
+    display: none;
+  }
+}
+
+.form-step-enter {
+  animation: form-step-in 180ms ease-out;
+}
+
+@keyframes form-step-in {
+  from {
+    opacity: 0.65;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ——— English display ——— */
+.font-display {
+  font-family: "Fraunces", "Times New Roman", serif;
+  font-weight: 400;
+  font-optical-sizing: auto;
+  letter-spacing: var(--tracking-display);
+  line-height: var(--lh-tight);
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+  max-width: 40rem;
+}
+
+button,
+a {
+  font-family: inherit;
+}
+
+/* ——— Arabic: Tajawal ——— */
+[dir="rtl"] body {
+  font-family: "Tajawal", "Tahoma", sans-serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.85;
+  letter-spacing: 0;
+}
+
+[dir="rtl"] .font-display,
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3 {
+  font-family: "Tajawal", "Tahoma", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+
+[dir="rtl"] h1 {
+  font-weight: 800;
+  line-height: 1.28;
+}
+
+[dir="rtl"] p {
+  line-height: 1.9;
+}
+
+[dir="rtl"] button,
+[dir="rtl"] a,
+[dir="rtl"] label,
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+  font-family: "Tajawal", "Tahoma", sans-serif;
+}
+
+[dir="rtl"] .tracking-\[0\.28em\],
+[dir="rtl"] .tracking-\[0\.22em\],
+[dir="rtl"] .tracking-\[0\.16em\],
+[dir="rtl"] .tracking-\[0\.14em\],
+[dir="rtl"] .tracking-\[0\.12em\],
+[dir="rtl"] .tracking-\[0\.1em\] {
+  letter-spacing: 0.06em;
+}
+
+/* Text reveal: avoid FOUC before GSAP (motion-ok only) */
+@media (prefers-reduced-motion: no-preference) {
+  .text-reveal [data-tr-word] {
+    transform: translate3d(0, 110%, 0);
+    opacity: 0;
+  }
+}
+
+button,
+.btn,
+input,
+textarea,
+select {
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+[dir="rtl"] button,
+[dir="rtl"] .btn,
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+::selection {
+  background: rgba(156, 133, 104, 0.28);
+  color: var(--color-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal-init {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+}

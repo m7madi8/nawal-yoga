@@ -1,0 +1,26 @@
+---
+description: Next.js / React conventions for the Nawal web app
+globs: web/**/*.{tsx,ts,css}
+alwaysApply: false
+---
+
+# Next.js Conventions (`web/`)
+
+## Structure
+- Routes: `web/src/app/`
+- UI: `web/src/components/` (layout, sections, experience, forms, animations)
+- Content/copy: `web/src/lib/content/`, `web/src/lib/i18n/`
+- Admin: `web/src/admin/` + `web/src/app/admin/`
+
+## Components
+- Prefer shared experience primitives (`PageHero`, `StoryStrip`, `Timeline`, `OfferList`, `GalleryRail`, `FaqAccordion`, `QuoteBlock`) for new retreat/event pages.
+- Keep future-retreat-ready shared UI; do not delete unused-looking experience helpers without checking planned Zanzibar / Wadi Rum work.
+
+## i18n
+- All user-visible strings go through the i18n dictionaries / copy modules (EN + AR).
+- RTL is handled when Arabic is active; test both languages for new UI.
+
+## Assets
+- Reference media as `/media/...`.
+- Never link `_archive` or files with spaces in path names.
+- Do not delete `zanzibar/`, `wadi-rum/`, or `altira/` media folders.

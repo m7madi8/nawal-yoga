@@ -1,67 +1,65 @@
 ---
-description: Nawal Yoga site — stack, i18n, Arabic/RTL, conventions
+description: Nawal Yoga site — Next.js stack, i18n, Arabic/RTL, conventions
 alwaysApply: true
 ---
 
 # Nawal Yoga Project
 
 ## Stack
-- Static site: plain HTML, CSS (Tailwind-built `css/style.css`), vanilla JS. No framework or build step.
+- **Live app:** Next.js 15 (App Router) in `web/` — TypeScript, Tailwind CSS v4, Framer Motion, GSAP, Lenis.
+- Develop: `cd web && npm run dev`. Deploy with Vercel Root Directory = `web`.
 
-## Pages
+## Active routes (`web/src/app/`)
 | Path | Role |
 |------|------|
-| `index.html` | Homepage |
-| `events.html` | Events hub |
-| `retreats.html` | Retreats hub |
-| `nawal.html` | Personal landing |
-| `workshops/haifa.html` | Haifa Yoga |
-| `workshops/al-tira.html` | Al-Tira workshop |
-| `workshops/jiva.html` | Redirect → `haifa.html` |
-| `events/sound-healing.html` | Sound Healing event |
-| `events/nature-chocolate.html` | يوم بين الطبيعة والشوكولاته |
-| `events/ice-bath.html` | Day retreat Ice Bath |
-| `retreats/dahab.html` | Dahab retreat |
-| `retreats/zanzibar.html` | Zanzibar retreat |
-| `retreats/wadi-rum.html` | Wadi Rum retreat |
-| `register/mountain-voice.html` | Mountain Voice form |
-| `register/ice-bath.html` | Ice Bath health form |
-| `register/wadi-rum.html` | Wadi Rum form |
-| `admin/index.html` | Admin login |
-| `admin/dashboard.html` | Admin dashboard |
+| `/` | Homepage |
+| `/practice` | Haifa weekly practice |
+| `/events` | Events hub |
+| `/events/sound-healing` | Sound Healing |
+| `/events/ice-bath` | Ice Bath day retreat |
+| `/events/ice-bath-experience` | Ice Bath experience detail |
+| `/events/nature-chocolate` | Nature & Chocolate (past / sold out) |
+| `/retreats` | Retreats hub |
+| `/retreats/dahab` | Dahab retreat (active) |
+| `/register/ice-bath` | Ice Bath health form |
+| `/register/mountain-voice` | Mountain Voice form |
+| `/admin/*` | Admin dashboard |
 
-Root stubs (`retreat-dahab.html`, `Zanzibar.html`, etc.) redirect to the canonical paths above — keep them for old links.
+## Future content (do not delete)
+Inactive offerings kept for later activation. Source HTML + media remain at repo root. See `legacy/README.md`.
 
-## Media (`public/media/`)
+| Offering | HTML (legacy) | Media |
+|----------|---------------|-------|
+| Zanzibar retreat | `retreats/zanzibar.html` | `public/media/zanzibar/` |
+| Wadi Rum retreat | `retreats/wadi-rum.html` | `public/media/wadi-rum/` |
+| Wadi Rum form | `register/wadi-rum.html` | — |
+| Al-Tira workshop | `workshops/al-tira.html` | `public/media/altira/` |
+
+Admin catalog seeds these as `coming_soon`. Shared static CSS/JS needed by those HTML pages: `css/style.css`, `css/rtl.css`, `css/scroll-media.css`, `css/retreat-page.css`, `css/retreat-premium.css`, `js/i18n.js`, `js/app.js`, `js/reveal.js`.
+
+## Media (`public/media/`, junctioned into `web/public/media`)
 | Folder | Contents |
 |--------|----------|
 | `brand/` | Logo, avatar |
 | `home/` | Hero, moments, trainer, video |
-| `haifa/` | Haifa workshop photos |
-| `altira/` | Al-Tira cover |
-| `events/` | Event photos (sound healing) |
+| `haifa/` | Haifa practice photos |
+| `events/` | Event photos (incl. `ice-bath/`) |
 | `dahab/` | Dahab retreat |
-| `zanzibar/` | Zanzibar retreat |
-| `wadi-rum/` | Wadi Rum retreat |
-| `shared/` | Shared CSS/decoration assets |
-| `_archive/` | Unused originals (do not link) |
+| `zanzibar/` | Future — Zanzibar |
+| `wadi-rum/` | Future — Wadi Rum |
+| `altira/` | Future — Al-Tira |
 
-Use clean lowercase folder names and URL-safe filenames (no spaces/emojis).
+Use clean lowercase folder names and URL-safe filenames (no spaces).
 
 ## Language (i18n)
-- **EN / AR** via `js/i18n.js`. Stored in `localStorage` key `nawal-lang`.
-- All user-visible text must exist in `translations.en` and `translations.ar` in `js/i18n.js`.
-- In HTML: use `data-i18n="key"` for text content; `data-i18n-attr="attributeName:key"` for attributes (e.g. `aria-label`).
-- When adding new copy, add the same key to both `en` and `ar` in `i18n.js`.
+- **EN / AR** via `web/src/lib/i18n/`.
+- Prefer dictionary keys in `dictionaries.ts` and page-specific copy modules.
+- When `lang="ar"`, `dir="rtl"` is set on `<html>`. Arabic fonts: headings **Amiri**, body **Scheherazade New**.
 
-## Arabic & RTL
-- When `lang="ar"`, `dir="rtl"` is set on `<html>` by i18n. RTL styles live in `css/rtl.css`.
-- **Arabic fonts**: Headings = **Amiri**, Body = **Scheherazade New** (loaded from Google Fonts). Defined only for `[dir="rtl"]` in `rtl.css`.
-- Workshop names in Arabic: **الطيرة** (Al-Tira), **حيفا** (Jiva/Haifa), **ريتريت** (Retreat). Use these exact terms in Arabic translations.
+## Arabic terms
+Workshop names in Arabic: **الطيرة** (Al-Tira), **حيفا** (Haifa), **ريتريت** (Retreat).
 
 ## Paths
-- Root pages use `css/`, `js/`, `public/`.
-- Subpages (`workshops/`, `events/`, `retreats/`, `register/`, `admin/`) use `../css/`, `../js/`, `../public/` and `../index.html` for home links.
-
-## UI
-- Language switcher: `.lang-switcher` with `data-lang-set="en"` and `data-lang-set="ar"`. Include it and `js/i18n.js` on every public page. RTL positioning for the switcher is in `rtl.css`.
+- App code lives under `web/src/`.
+- Public assets: `/media/...` (served from `public/media` via junction).
+- Import alias: `@/*` → `web/src/*`.

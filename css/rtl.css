@@ -1,33 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
-
 /* RTL: Arabic layout, language switcher & Arabic typography */
-
-/* Arabic typography: use Tajawal across all Arabic UI */
-/* Optional: لاستخدام 29LT Bukra بدل أميري، أضف ملفات الخط في /fonts/ وفعّل قواعد @font-face أدناه */
-
-/*
-@font-face {
-  font-family: '29LT Bukra';
-  src: url('../fonts/29LTBukra-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: '29LT Bukra';
-  src: url('../fonts/29LTBukra-SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: '29LT Bukra';
-  src: url('../fonts/29LTBukra-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-*/
+/* Headings = Amiri · Body = Scheherazade New (loaded on pages via Google Fonts) */
 
 /* Language switcher - always visible (Tailwind may not include z-[70], right-4, etc.) */
 .lang-switcher {
@@ -83,8 +55,10 @@
 }
 
 [dir="rtl"] body {
-  font-family: 'Tajawal', sans-serif;
-  font-weight: 500;
+  font-family: 'Scheherazade New', 'Amiri', serif;
+  font-weight: 400;
+  font-size: 1.125rem;
+  line-height: 1.75;
 }
 [dir="rtl"] .font-serif,
 [dir="rtl"] h1,
@@ -93,8 +67,13 @@
 [dir="rtl"] .hero-headline,
 [dir="rtl"] .workshop-card-title,
 [dir="rtl"] .hero-name,
-[dir="rtl"] .page-footer-name {
-  font-family: 'Tajawal', sans-serif;
+[dir="rtl"] .page-footer-name,
+[dir="rtl"] .sanctuary-display,
+[dir="rtl"] .breath-word,
+[dir="rtl"] .pathway-title,
+[dir="rtl"] .voice-quote,
+[dir="rtl"] .join-title {
+  font-family: 'Amiri', 'Scheherazade New', serif;
   font-weight: 700;
 }
 [dir="rtl"] .workshop-card-title {
@@ -102,9 +81,14 @@
 }
 
 [dir="rtl"] .page-loader__tagline {
-  font-family: 'Tajawal', sans-serif;
+  font-family: 'Scheherazade New', serif;
   font-weight: 500;
   letter-spacing: 0.08em;
+}
+
+[dir="rtl"] .sanctuary-cta .cta-arrow,
+[dir="rtl"] .pathway-link .cta-arrow {
+  transform: scaleX(-1);
 }
 
 [dir="rtl"] .lang-switcher {
@@ -157,12 +141,12 @@
 
 .site-header .lang-switcher--bar .lang-btn,
 .site-menu-sheet .lang-switcher--bar .lang-btn {
-  color: rgba(90, 70, 50, 0.58);
+  color: rgba(26, 26, 24, 0.55);
   font-weight: 500;
 }
 
 .site-header .lang-switcher--bar .lang-btn:hover,
 .site-menu-sheet .lang-switcher--bar .lang-btn:hover {
   background: transparent;
-  color: var(--color-accent, #a67c52);
+  color: var(--color-brass, #9a7b55);
 }

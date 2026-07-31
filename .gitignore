@@ -1,1 +1,27 @@
+# Dependencies
+node_modules/
+web/node_modules/
+
+# Next.js
+web/.next/
+web/out/
+
+# Env
+.env
+.env.*
+!.env.example
+web/.env
+web/.env.*
+!web/.env.example
+
+# Logs / OS
+*.log
+.DS_Store
+Thumbs.db
+
+# Local deploy metadata
 .vercel
+
+# Editors
+.vscode/*
+!.vscode/extensions.json

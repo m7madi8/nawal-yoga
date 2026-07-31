@@ -1,48 +1,7 @@
 /**
- * App global: audio consent, keyboard nav, custom cursor
+ * App global: keyboard nav, custom cursor
  */
 (function () {
-  var AUDIO_CONSENT_KEY = 'audio-consent-v2';
-
-  function initAudioConsent() {
-    var promptEl = document.getElementById('audio-consent-prompt');
-    if (!promptEl) return;
-
-    var saved = null;
-    try {
-      saved = localStorage.getItem(AUDIO_CONSENT_KEY);
-    } catch (e) {}
-
-    if (saved === 'accepted' || saved === 'declined') {
-      promptEl.hidden = true;
-      return;
-    }
-
-    promptEl.hidden = false;
-
-    var acceptBtn = promptEl.querySelector('[data-audio-accept]');
-    var declineBtn = promptEl.querySelector('[data-audio-decline]');
-
-    if (acceptBtn) {
-      acceptBtn.addEventListener('click', function () {
-        try {
-          localStorage.setItem(AUDIO_CONSENT_KEY, 'accepted');
-        } catch (e) {}
-        promptEl.hidden = true;
-        window.dispatchEvent(new CustomEvent('audio-consent-unlock'));
-      });
-    }
-
-    if (declineBtn) {
-      declineBtn.addEventListener('click', function () {
-        try {
-          localStorage.setItem(AUDIO_CONSENT_KEY, 'declined');
-        } catch (e) {}
-        promptEl.hidden = true;
-      });
-    }
-  }
-
   function initCursor() {
     var isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -125,7 +84,7 @@
           url: base,
           name: 'Nawal Omar Yoga',
           description:
-            'Yoga classes, workshops and retreats with certified instructor Nawal Omar in Haifa, Israel.',
+            'Yoga classes, workshops and retreats with nurse and yoga teacher Nawal Omar in Haifa, Israel.',
           inLanguage: ['en', 'ar'],
           publisher: { '@id': base + '#person' }
         },
@@ -133,9 +92,9 @@
           '@type': 'Person',
           '@id': base + '#person',
           name: 'Nawal Omar',
-          jobTitle: 'Certified Yoga Instructor',
+          jobTitle: 'Nurse and Yoga Teacher',
           description:
-            'Yoga teacher offering Vinyasa, Yin, Hatha and meditation in Haifa, Israel; workshops in Al-Tira and Haifa; international retreats.',
+            'Nurse specializing in women\'s health and yoga teacher offering Vinyasa, Yin, Hatha and meditation in Haifa, Israel; workshops and international women\'s retreats.',
           url: base,
           image: imgPerson,
           sameAs: ['https://www.instagram.com/nawal_aom/'],
@@ -150,7 +109,15 @@
               addressCountry: 'IL'
             }
           },
-          knowsAbout: ['Yoga', 'Vinyasa Yoga', 'Yin Yoga', 'Hatha Yoga', 'Meditation', 'Mindfulness']
+          knowsAbout: [
+            'Yoga',
+            'Vinyasa Yoga',
+            'Yin Yoga',
+            'Hatha Yoga',
+            'Meditation',
+            'Women\'s Health',
+            'Mindfulness'
+          ]
         },
         {
           '@type': 'ProfessionalService',
@@ -354,7 +321,6 @@
     initSeoUrls();
     initSeoJsonLdHome();
     initPageLoader();
-    initAudioConsent();
     initCursor();
     initMobileLangToggle();
     initMenu();
