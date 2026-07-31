@@ -40,8 +40,8 @@
   --color-brass: var(--color-brass);
   --color-mist: var(--color-mist);
   --color-sand: var(--color-sand);
-  --font-sans: "Bricolage Grotesque", system-ui, sans-serif;
-  --font-display: "Fraunces", "Times New Roman", serif;
+  --font-sans: "Tajawal", "Tahoma", system-ui, sans-serif;
+  --font-display: "Tajawal", "Tahoma", system-ui, sans-serif;
   --font-arabic: "Tajawal", "Tahoma", sans-serif;
 }
 
@@ -57,12 +57,11 @@ html.lenis body {
 body {
   background: #fafaf8;
   color: var(--color-ink);
-  font-family: "Bricolage Grotesque", system-ui, sans-serif;
-  font-optical-sizing: auto;
+  font-family: "Tajawal", "Tahoma", system-ui, sans-serif;
   font-size: var(--fs-body);
   font-weight: 400;
   line-height: var(--lh-body);
-  letter-spacing: 0.005em;
+  letter-spacing: 0;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -100,19 +99,19 @@ body::before {
   }
 }
 
-/* ——— English display ——— */
+/* ——— Unified type: Tajawal ——— */
 .font-display {
-  font-family: "Fraunces", "Times New Roman", serif;
-  font-weight: 400;
-  font-optical-sizing: auto;
-  letter-spacing: var(--tracking-display);
-  line-height: var(--lh-tight);
+  font-family: "Tajawal", "Tahoma", system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: var(--lh-snug);
 }
 
 h1,
 h2,
 h3 {
   text-wrap: balance;
+  font-family: "Tajawal", "Tahoma", system-ui, sans-serif;
 }
 
 p {
@@ -121,26 +120,25 @@ p {
 }
 
 button,
-a {
+a,
+label,
+input,
+textarea,
+select {
   font-family: inherit;
 }
 
-/* ——— Arabic: Tajawal ——— */
+/* Arabic rhythm (same family) */
 [dir="rtl"] body {
-  font-family: "Tajawal", "Tahoma", sans-serif;
   font-size: 1.125rem;
-  font-weight: 400;
   line-height: 1.85;
-  letter-spacing: 0;
 }
 
 [dir="rtl"] .font-display,
 [dir="rtl"] h1,
 [dir="rtl"] h2,
 [dir="rtl"] h3 {
-  font-family: "Tajawal", "Tahoma", sans-serif;
   font-weight: 700;
-  letter-spacing: 0;
   line-height: 1.35;
 }
 
@@ -151,15 +149,6 @@ a {
 
 [dir="rtl"] p {
   line-height: 1.9;
-}
-
-[dir="rtl"] button,
-[dir="rtl"] a,
-[dir="rtl"] label,
-[dir="rtl"] input,
-[dir="rtl"] textarea,
-[dir="rtl"] select {
-  font-family: "Tajawal", "Tahoma", sans-serif;
 }
 
 [dir="rtl"] .tracking-\[0\.28em\],

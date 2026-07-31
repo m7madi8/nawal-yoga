@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n/provider";
-import { waLink, type DictKey } from "@/lib/i18n/dictionaries";
+import { type DictKey } from "@/lib/i18n/dictionaries";
 import {
   WAZE_HOFIT,
   iceBathFor,
@@ -13,6 +13,7 @@ import {
   iceBathWhy,
 } from "@/lib/content/ice-bath";
 import { useIceBathMotion } from "@/components/ice-bath/useIceBathMotion";
+import { IceBathRegisterModal } from "@/components/ice-bath/IceBathRegisterModal";
 import "./ice-bath-event.css";
 
 function CheckIcon() {
@@ -27,8 +28,13 @@ export function IceBathPage() {
   const { t, dir, locale } = useI18n();
   const rootRef = useRef<HTMLDivElement>(null);
   useIceBathMotion(rootRef, locale);
+  const [registerOpen, setRegisterOpen] = useState(false);
+  const [successVisible, setSuccessVisible] = useState(false);
 
-  const bookHref = waLink(t("events_ib_wa_msg"));
+  function showSuccess() {
+    setSuccessVisible(true);
+    window.setTimeout(() => setSuccessVisible(false), 3800);
+  }
 
   return (
     <div ref={rootRef} className="ib-page">
@@ -68,15 +74,14 @@ export function IceBathPage() {
               <p className="ib-hero__meta-row">{t("events_ib_time")}</p>
               <p className="ib-hero__meta-row">{t("events_ib_location")}</p>
             </div>
-            <a
-              href={bookHref}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
               className="ib-hero__cta ib-hero__fade ib-hero__fade--3"
               aria-label={t("events_ib_cta_aria")}
+              onClick={() => setRegisterOpen(true)}
             >
               <span>{t("events_ib_cta")}</span>
-            </a>
+            </button>
             <Link
               href="/register/ice-bath"
               className="ib-hero__health ib-hero__fade ib-hero__fade--3"
@@ -294,15 +299,14 @@ export function IceBathPage() {
             <p className="ib-cta__text">{t("events_ib_book_body")}</p>
             <p className="ib-cta__note">{t("events_ib_book_note")}</p>
             <div className="ib-cta__actions">
-              <a
-                href={bookHref}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
                 className="ib-cta__btn"
                 aria-label={t("events_ib_cta_aria")}
+                onClick={() => setRegisterOpen(true)}
               >
                 <span>{t("events_ib_cta")}</span>
-              </a>
+              </button>
               <Link
                 href="/register/ice-bath"
                 className="ib-cta__btn ib-cta__btn--secondary"
@@ -314,6 +318,20 @@ export function IceBathPage() {
           </div>
         </section>
       </main>
+
+      <IceBathRegisterModal
+        open={registerOpen}
+        onClose={() => setRegisterOpen(false)}
+        onSuccess={showSuccess}
+      />
+
+      <div
+        className={`ib-register-success${successVisible ? " is-show" : ""}`}
+        hidden={!successVisible}
+        role="status"
+      >
+        {t("events_ib_register_success")}
+      </div>
     </div>
   );
 }

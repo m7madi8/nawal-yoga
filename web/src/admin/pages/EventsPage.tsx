@@ -11,7 +11,7 @@ import { useAdminData } from "@/admin/components/shell/AdminShell";
 import { RequestRow } from "@/admin/components/requests/RequestRow";
 import { RequestDetailModal } from "@/admin/components/requests/RequestDetailModal";
 import { loadEvents, saveEvents } from "@/admin/lib/catalog";
-import { YOGA_SOURCES } from "@/admin/lib/labels";
+import { EVENT_BOOKING_SOURCES, YOGA_SOURCES } from "@/admin/lib/labels";
 import type { ManagedEvent, RetreatRequest } from "@/admin/lib/types";
 
 export function EventsPage() {
@@ -23,7 +23,10 @@ export function EventsPage() {
   const [busy, setBusy] = useState(false);
 
   const classRequests = useMemo(
-    () => rows.filter((r) => YOGA_SOURCES.includes(r.source)),
+    () =>
+      rows.filter(
+        (r) => YOGA_SOURCES.includes(r.source) || EVENT_BOOKING_SOURCES.includes(r.source),
+      ),
     [rows],
   );
 
@@ -134,7 +137,7 @@ export function EventsPage() {
 
       <Panel>
         <div className="border-b border-[var(--border-soft)] px-5 py-4">
-          <h2 className="text-sm font-medium text-ink">Class registrations</h2>
+          <h2 className="text-sm font-medium text-ink">Class & event registrations</h2>
         </div>
         {classRequests.length === 0 ? (
           <div className="p-5">

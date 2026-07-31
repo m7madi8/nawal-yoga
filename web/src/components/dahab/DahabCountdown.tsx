@@ -28,7 +28,7 @@ export function DahabCountdown() {
   }, []);
 
   return (
-    <section className="bg-[#f3ebe1] py-12 sm:py-14" aria-label={t("a11y_countdown")}>
+    <section className="bg-[#fafaf8] py-12 sm:py-14" aria-label={t("a11y_countdown")}>
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <Reveal>
           <div className="grid grid-cols-4 gap-2 sm:gap-4">

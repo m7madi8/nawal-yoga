@@ -1,15 +1,15 @@
-/* ── Sound Healing premium page ── */
+﻿/* ── Sound Healing premium page ── */
 
 .event-sh-page {
   --esh-accent: #825a3a;
   --esh-accent-dark: #6b4a32;
   --esh-accent-soft: rgba(130, 90, 58, 0.1);
-  --esh-cream: #faf8f5;
-  --esh-warm: #fdf6ee;
-  --esh-card: #fffdf9;
+  --esh-cream: #fafaf8;
+  --esh-warm: #fafaf8;
+  --esh-card: #fafaf8;
   --esh-text: rgba(62, 47, 43, 0.92);
   --esh-muted: rgba(62, 47, 43, 0.62);
-  background: var(--esh-cream);
+  background: var(--background, #fafaf8);
 }
 
 .event-sh-main {
@@ -18,7 +18,7 @@
 
 /* Hero */
 .event-sh-hero {
-  background: linear-gradient(180deg, var(--esh-warm) 0%, var(--esh-cream) 100%);
+  background: var(--background, #fafaf8);
   border-bottom: 1px solid rgba(185, 137, 95, 0.2);
   padding: 1rem 0 2.5rem;
 }
@@ -73,7 +73,7 @@
 
 .event-sh-title {
   margin: 0 0 0.65rem;
-  font-family: "Fraunces", "Playfair Display", Georgia, serif;
+  font-family: "Tajawal", "Tahoma", system-ui, sans-serif;
   font-size: clamp(2rem, 5vw, 2.85rem);
   font-weight: 600;
   line-height: 1.12;
@@ -203,7 +203,7 @@
   background: var(--esh-card);
   border: 1px solid rgba(185, 137, 95, 0.24);
   box-shadow: 0 8px 24px rgba(130, 90, 58, 0.06);
-  font-family: "Fraunces", "Playfair Display", Georgia, serif;
+  font-family: "Tajawal", "Tahoma", system-ui, sans-serif;
   font-size: clamp(1rem, 2.4vw, 1.12rem);
   font-weight: 600;
   line-height: 1.45;
@@ -227,7 +227,7 @@
   border-radius: 999px;
   background: var(--esh-accent-soft);
   border: 1px solid rgba(185, 137, 95, 0.28);
-  font-family: Inter, sans-serif;
+  font-family: "Tajawal", "Tahoma", system-ui, sans-serif;
   font-size: 1.1rem;
   font-weight: 500;
   line-height: 1;
@@ -254,7 +254,7 @@
 }
 
 .event-sh-readmore-summary:hover {
-  background: #fffdf9;
+  background: #fafaf8;
 }
 
 .event-sh-main-col {
@@ -303,7 +303,7 @@
 
 .event-sh-content-title {
   margin: 0 0 0.85rem;
-  font-family: "Fraunces", "Playfair Display", Georgia, serif;
+  font-family: "Tajawal", "Tahoma", system-ui, sans-serif;
   font-size: clamp(1.15rem, 2.6vw, 1.35rem);
   font-weight: 600;
   line-height: 1.35;
@@ -343,7 +343,7 @@
 
 .event-sh-section-title {
   margin: 0 0 0.35rem;
-  font-family: "Fraunces", "Playfair Display", Georgia, serif;
+  font-family: "Tajawal", "Tahoma", system-ui, sans-serif;
   font-size: clamp(1.2rem, 2.8vw, 1.45rem);
   font-weight: 600;
   color: var(--esh-text);
@@ -507,7 +507,7 @@
 }
 
 .event-sh-price-card--accent {
-  background: linear-gradient(165deg, #fffdf9, #faf0e4);
+  background: #fafaf8;
   border-color: rgba(185, 137, 95, 0.35);
   box-shadow: 0 4px 14px rgba(130, 90, 58, 0.08);
 }
@@ -515,7 +515,7 @@
 .event-sh-price-amount {
   display: block;
   margin-bottom: 0.35rem;
-  font-family: "Fraunces", "Playfair Display", Georgia, serif;
+  font-family: "Tajawal", "Tahoma", system-ui, sans-serif;
   font-size: clamp(1.5rem, 4vw, 1.85rem);
   font-weight: 600;
   line-height: 1;
@@ -657,7 +657,7 @@
 
 /* RTL */
 html[dir="rtl"] .event-sh-page {
-  font-family: "Tajawal", "Tahoma", sans-serif;
+  font-family: "Tajawal", "Tahoma", system-ui, sans-serif;
 }
 
 html[dir="rtl"] .event-sh-page :is(
@@ -667,7 +667,7 @@ html[dir="rtl"] .event-sh-page :is(
   .event-sh-readmore-summary,
   .event-sh-price-amount
 ) {
-  font-family: "Tajawal", "Tahoma", sans-serif;
+  font-family: "Tajawal", "Tahoma", system-ui, sans-serif;
   font-weight: 700;
 }
 

@@ -198,7 +198,7 @@ export default function PracticeClient() {
 
           {/* Calm */}
           <Reveal delay={0.06}>
-            <article className="rounded-[1.5rem] border border-[var(--border-soft)] bg-[#f6efe6]/70 p-6 sm:p-8 lg:p-10">
+            <article className="rounded-[1.5rem] border border-[var(--border-soft)] bg-[#fafaf8] p-6 sm:p-8 lg:p-10">
               <span className="mb-2 inline-block text-[0.65rem] tracking-[0.18em] text-brass uppercase">
                 {t("jiva_class_saturday_day")}
               </span>
@@ -289,8 +289,8 @@ export default function PracticeClient() {
                     <article
                       className={`flex h-full flex-col rounded-[1.25rem] border p-5 ${
                         "featured" in plan && plan.featured
-                          ? "border-brass/40 bg-[#f3ebe1]"
-                          : "border-[var(--border-soft)] bg-white/70"
+                          ? "border-brass/40 bg-[#fafaf8]"
+                          : "border-[var(--border-soft)] bg-[#fafaf8]"
                       }`}
                     >
                       <p className="font-display mb-2 text-xl text-ink">

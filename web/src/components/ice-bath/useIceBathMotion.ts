@@ -171,47 +171,6 @@ export function useIceBathMotion(rootRef: React.RefObject<HTMLDivElement | null>
         }
       });
 
-      gsap.to(page, {
-        "--bg-temp": "#d9eef5",
-        ease: "none",
-        scrollTrigger: {
-          trigger: page.querySelector(".ib-stop--ice"),
-          start: "top 60%",
-          end: "bottom 40%",
-          scrub: true,
-        },
-      });
-      gsap.to(page, {
-        "--bg-temp": "#f3e6d4",
-        ease: "none",
-        scrollTrigger: {
-          trigger: page.querySelector(".ib-stop--sauna"),
-          start: "top 60%",
-          end: "bottom 40%",
-          scrub: true,
-        },
-      });
-      gsap.to(page, {
-        "--bg-temp": "#f6ebe6",
-        ease: "none",
-        scrollTrigger: {
-          trigger: page.querySelector(".ib-stop--flower"),
-          start: "top 60%",
-          end: "bottom 20%",
-          scrub: true,
-        },
-      });
-      gsap.to(page, {
-        "--bg-temp": "#e8f1f3",
-        ease: "none",
-        scrollTrigger: {
-          trigger: page.querySelector(".ib-cta"),
-          start: "top 80%",
-          end: "top 30%",
-          scrub: true,
-        },
-      });
-
       page.querySelectorAll(".ib-includes__item").forEach((item, i) => {
         gsap.fromTo(
           item,

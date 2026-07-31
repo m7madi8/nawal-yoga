@@ -6,6 +6,8 @@ export const MEDICAL_SOURCES: RequestSource[] = [
   "ice-bath-health",
 ];
 
+export const EVENT_BOOKING_SOURCES: RequestSource[] = ["ice-bath-registration"];
+
 export const RETREAT_SOURCES: RequestSource[] = [
   "dahab-retreat-reserve",
   "wadi-rum-registration",
@@ -22,6 +24,7 @@ export function sourceLabel(source: string): string {
     "mountain-voice": "Mountain Voice Health",
     "mountain-voice-registration": "Mountain Voice Health",
     "ice-bath-health": "Ice Bath Health",
+    "ice-bath-registration": "Ice Bath Booking",
     "dahab-retreat-reserve": "Dahab Retreat",
     "wadi-rum-registration": "Wadi Rum Retreat",
     "zanzibar-retreat-reserve": "Zanzibar Retreat",
@@ -35,6 +38,7 @@ export function sourceKind(
   source: string,
 ): "medical" | "retreat" | "yoga" | "event" | "other" {
   if (MEDICAL_SOURCES.includes(source)) return "medical";
+  if (EVENT_BOOKING_SOURCES.includes(source)) return "event";
   if (RETREAT_SOURCES.includes(source)) return "retreat";
   if (YOGA_SOURCES.includes(source)) return "yoga";
   return "other";

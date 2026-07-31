@@ -85,7 +85,7 @@ export function DahabBookModal({ open, onClose, onSuccess }: Props) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="relative z-10 w-full max-w-md rounded-2xl border border-brass/30 bg-[#fffdf9] p-5 shadow-2xl sm:p-6"
+            className="relative z-10 w-full max-w-md rounded-2xl border border-brass/30 bg-[#fafaf8] p-5 shadow-2xl sm:p-6"
           >
             <div className="mb-4 flex items-center justify-between gap-3">
               <h3 id="dahab-book-title" className="font-display text-xl text-ink">
@@ -94,7 +94,7 @@ export function DahabBookModal({ open, onClose, onSuccess }: Props) {
               <button
                 type="button"
                 onClick={onClose}
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-brass/30 bg-[#f8efe3] text-lg text-[#5a4632]"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-brass/30 bg-[#fafaf8] text-lg text-[#5a4632]"
                 aria-label={t("close")}
               >
                 ×

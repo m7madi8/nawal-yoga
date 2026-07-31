@@ -4,6 +4,7 @@ export type RequestSource =
   | "mountain-voice"
   | "mountain-voice-registration"
   | "ice-bath-health"
+  | "ice-bath-registration"
   | "dahab-retreat-reserve"
   | "wadi-rum-registration"
   | "zanzibar-retreat-reserve"
