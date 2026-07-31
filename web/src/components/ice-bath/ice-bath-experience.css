@@ -11,6 +11,8 @@
   --ibx-enter: 1.2rem;
   background: var(--background, #fafaf8);
   color: var(--ibx-ink);
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 html[dir="rtl"] .ibx-page {
@@ -481,7 +483,42 @@ html[dir="rtl"] .ibx-rule {
     padding: 3.2rem 0;
   }
 
+  .ibx-wrap {
+    width: min(1080px, calc(100% - 1.5rem));
+  }
+
+  .ibx-hero {
+    min-height: calc(100svh - 3.5rem);
+    min-height: calc(100dvh - 3.5rem);
+  }
+
   .ibx-hero__inner {
-    margin-bottom: 2.2rem;
+    margin-bottom: 1.5rem;
+    padding-inline: 1rem;
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
+  }
+
+  .ibx-title {
+    font-size: clamp(1.45rem, 7vw, 1.9rem);
+    overflow-wrap: anywhere;
+  }
+
+  .ibx-lead,
+  .ibx-prose {
+    font-size: 0.98rem;
+  }
+
+  .ibx-btn,
+  .ibx-hero__cta {
+    width: 100%;
+    min-height: 3rem;
+    box-sizing: border-box;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) and (max-height: 720px) {
+  .ibx-hero {
+    min-height: auto;
   }
 }

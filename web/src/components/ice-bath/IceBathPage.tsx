@@ -74,21 +74,23 @@ export function IceBathPage() {
               <p className="ib-hero__meta-row">{t("events_ib_time")}</p>
               <p className="ib-hero__meta-row">{t("events_ib_location")}</p>
             </div>
-            <button
-              type="button"
-              className="ib-hero__cta ib-hero__fade ib-hero__fade--3"
-              aria-label={t("events_ib_cta_aria")}
-              onClick={() => setRegisterOpen(true)}
-            >
-              <span>{t("events_ib_cta")}</span>
-            </button>
-            <Link
-              href="/register/ice-bath"
-              className="ib-hero__health ib-hero__fade ib-hero__fade--3"
-              aria-label={t("events_ib_health_cta_aria")}
-            >
-              <span>{t("events_ib_health_cta")}</span>
-            </Link>
+            <div className="ib-hero__actions ib-hero__fade ib-hero__fade--3">
+              <button
+                type="button"
+                className="ib-hero__cta"
+                aria-label={t("events_ib_cta_aria")}
+                onClick={() => setRegisterOpen(true)}
+              >
+                <span>{t("events_ib_cta")}</span>
+              </button>
+              <Link
+                href="/register/ice-bath"
+                className="ib-hero__health"
+                aria-label={t("events_ib_health_cta_aria")}
+              >
+                <span>{t("events_ib_health_cta")}</span>
+              </Link>
+            </div>
           </div>
         </section>
 

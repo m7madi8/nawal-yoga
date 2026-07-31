@@ -98,7 +98,7 @@ export function useIceBathMotion(rootRef: React.RefObject<HTMLDivElement | null>
       const divider = page.querySelector(".ib-hero__divider");
       const meta = page.querySelector(".ib-hero__meta");
       const heroCta = page.querySelector(".ib-hero__cta");
-      const health = page.querySelector(".ib-hero__health");
+      const heroActions = page.querySelector(".ib-hero__actions");
 
       const words = splitTitleWords(titleEl);
       const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
@@ -113,11 +113,12 @@ export function useIceBathMotion(rootRef: React.RefObject<HTMLDivElement | null>
       }
       if (divider) tl.fromTo(divider, { scaleX: 0 }, { scaleX: 1, duration: 0.55 }, "-=0.4");
       if (meta) tl.fromTo(meta, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.55 }, "-=0.25");
-      if (heroCta) {
+      if (heroActions) {
+        tl.fromTo(heroActions, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.5 }, "-=0.15");
+      } else if (heroCta) {
         tl.fromTo(heroCta, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.5 }, "-=0.15");
-        tl.add(() => heroCta.classList.add("ib-cta--breathe"));
       }
-      if (health) tl.fromTo(health, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.45 }, "-=0.2");
+      if (heroCta) tl.add(() => heroCta.classList.add("ib-cta--breathe"));
 
       if (timeline && progress) {
         gsap.set(progress, { height: 0 });

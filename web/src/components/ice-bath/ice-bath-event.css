@@ -18,6 +18,8 @@
   --ib-enter-x: 1.4rem;
   background-color: var(--background, #fafaf8);
   color: var(--ib-ink);
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 html[dir="rtl"] .ib-page {
@@ -166,12 +168,13 @@ html[dir="rtl"] .ib-page {
 
 .ib-hero__back {
   position: absolute;
-  top: 1rem;
-  inset-inline-start: 1rem;
+  top: max(0.75rem, env(safe-area-inset-top, 0px));
+  inset-inline-start: max(0.75rem, env(safe-area-inset-left, 0px));
   z-index: 5;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  min-height: 2.5rem;
   padding: 0.45rem 0.85rem;
   border-radius: 999px;
   border: 1px solid rgba(243, 248, 249, 0.28);
@@ -196,7 +199,7 @@ html[dir="rtl"] .ib-page {
   z-index: 5;
   width: min(100%, 40rem);
   margin-inline: auto;
-  padding: 2.5rem 1.25rem 2.75rem;
+  padding: 2.5rem 1.25rem max(2.75rem, env(safe-area-inset-bottom, 0px));
   text-align: center;
 }
 
@@ -213,11 +216,13 @@ html[dir="rtl"] .ib-page {
 .ib-hero__title {
   margin: 0;
   font-family: "Tajawal", "Tahoma", system-ui, sans-serif;
-  font-size: clamp(1.85rem, 6vw, 2.75rem);
+  font-size: clamp(1.55rem, 6.2vw, 2.75rem);
   font-weight: 600;
   line-height: 1.28;
   color: #f7fbfc;
   text-wrap: balance;
+  overflow-wrap: anywhere;
+  hyphens: auto;
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.28);
 }
 
@@ -262,6 +267,7 @@ html[dir="rtl"] .ib-page {
   justify-content: center;
   gap: 0.45rem;
   min-width: min(100%, 15rem);
+  min-height: 2.85rem;
   padding: 0.9rem 1.55rem;
   border-radius: 999px;
   border: 1px solid rgba(232, 241, 243, 0.45);
@@ -270,6 +276,7 @@ html[dir="rtl"] .ib-page {
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
+  cursor: pointer;
   box-shadow:
     0 10px 28px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -284,11 +291,20 @@ html[dir="rtl"] .ib-page {
     inset 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 
+.ib-hero__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+}
+
 .ib-hero__health {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 0.85rem;
+  margin-top: 0;
+  min-height: 2.5rem;
   padding: 0.35rem 0.25rem;
   color: rgba(232, 241, 243, 0.9);
   font-size: 0.88rem;
@@ -1428,5 +1444,261 @@ html[dir="rtl"] .ib-hero__back svg {
 .ib-register-success.is-show {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ── Mobile / phone responsiveness ── */
+@media (max-width: 767px) {
+  .ib-hero__mist,
+  .ib-cta__mist {
+    inset: -8% -4%;
+    filter: blur(18px);
+    opacity: 0.35;
+  }
+
+  .ib-hero {
+    min-height: calc(100svh - 3.5rem);
+    min-height: calc(100dvh - 3.5rem);
+  }
+
+  .ib-hero__inner {
+    padding: 3.25rem 1rem max(1.75rem, env(safe-area-inset-bottom, 0px));
+  }
+
+  .ib-hero__brand {
+    margin-bottom: 0.55rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+  }
+
+  .ib-hero__title {
+    font-size: clamp(1.4rem, 7.2vw, 1.95rem);
+    line-height: 1.32;
+  }
+
+  .ib-hero__divider {
+    margin: 0.75rem auto 0.85rem;
+  }
+
+  .ib-hero__meta {
+    gap: 0.25rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .ib-hero__meta-row {
+    font-size: 0.88rem;
+  }
+
+  .ib-hero__meta-row--date {
+    font-size: 1.15rem;
+  }
+
+  .ib-hero__cta {
+    width: min(100%, 20rem);
+    min-height: 3rem;
+    font-size: 0.92rem;
+  }
+
+  .ib-hero__health {
+    width: min(100%, 20rem);
+    font-size: 0.84rem;
+  }
+
+  .ib-section {
+    padding: clamp(2.1rem, 8vw, 3.25rem) 0;
+  }
+
+  .ib-wrap {
+    padding-inline: max(1rem, env(safe-area-inset-left, 0px))
+      max(1rem, env(safe-area-inset-right, 0px));
+  }
+
+  .ib-intro__text,
+  .ib-stop__body,
+  .ib-why__body {
+    font-size: 0.95rem;
+  }
+
+  .ib-stop {
+    padding-inline-start: 1.85rem;
+    padding-bottom: 1.75rem;
+  }
+
+  .ib-stop__media,
+  .ib-stop__media--lunch,
+  .ib-stop__media--flower,
+  .ib-stop__media--breath {
+    aspect-ratio: 4 / 3;
+    border-radius: 0.75rem;
+    max-width: 100%;
+  }
+
+  .ib-stop__title {
+    font-size: 1.1rem;
+  }
+
+  .ib-includes__item {
+    font-size: 0.95rem;
+    gap: 0.6rem;
+  }
+
+  .ib-dress__options {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .ib-dress__option {
+    font-size: 1.1rem;
+  }
+
+  .ib-pricing__grid {
+    gap: 0;
+  }
+
+  .ib-price {
+    padding: 1.15rem 0.85rem;
+  }
+
+  .ib-price__amount {
+    font-size: clamp(1.75rem, 8vw, 2.15rem);
+  }
+
+  .ib-audience__grid {
+    gap: 2rem;
+  }
+
+  .ib-why__item {
+    padding-inline-start: 2.5rem;
+  }
+
+  .ib-why__item::before {
+    font-size: 1.3rem;
+  }
+
+  .ib-cta {
+    min-height: 0;
+  }
+
+  .ib-cta__inner {
+    padding: 2.5rem 1rem max(2.5rem, env(safe-area-inset-bottom, 0px));
+  }
+
+  .ib-cta__actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .ib-cta__btn {
+    width: 100%;
+    min-width: 0;
+    min-height: 3rem;
+  }
+
+  .ib-health-btn {
+    width: 100%;
+    min-height: 2.85rem;
+    box-sizing: border-box;
+  }
+
+  .ib-register-modal {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0;
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .ib-register-card {
+    width: 100%;
+    max-width: none;
+    max-height: min(92dvh, 100%);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 1.25rem 1.25rem 0 0;
+    padding: 1.15rem 1.1rem max(1.35rem, env(safe-area-inset-bottom, 0px));
+    overscroll-behavior: contain;
+  }
+
+  .ib-register-input {
+    font-size: 1rem; /* prevents iOS zoom on focus */
+    min-height: 2.85rem;
+  }
+
+  .ib-register-submit {
+    min-height: 3rem;
+    width: 100%;
+  }
+
+  .ib-register-success {
+    inset-inline: 0.75rem;
+    bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+    font-size: 0.85rem;
+  }
+}
+
+/* Short phones (SE / landscape height) — keep hero readable without clipping */
+@media (max-width: 767px) and (max-height: 720px) {
+  .ib-hero {
+    min-height: auto;
+    align-items: flex-end;
+  }
+
+  .ib-hero__inner {
+    padding-top: 3.5rem;
+    padding-bottom: 1.35rem;
+  }
+
+  .ib-hero__brand {
+    margin-bottom: 0.4rem;
+  }
+
+  .ib-hero__title {
+    font-size: clamp(1.28rem, 6.5vw, 1.65rem);
+  }
+
+  .ib-hero__meta-row--date {
+    font-size: 1.05rem;
+  }
+
+  .ib-hero__cta {
+    min-height: 2.75rem;
+    padding: 0.75rem 1.25rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .ib-hero__title {
+    font-size: 1.28rem;
+  }
+
+  .ib-wrap {
+    padding-inline: 0.85rem;
+  }
+
+  .ib-stop {
+    padding-inline-start: 1.65rem;
+  }
+}
+
+/* Landscape phones */
+@media (max-width: 900px) and (max-height: 480px) and (orientation: landscape) {
+  .ib-hero {
+    min-height: auto;
+  }
+
+  .ib-hero__inner {
+    padding: 2.75rem 1.25rem 1.25rem;
+  }
+
+  .ib-hero__actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .ib-hero__cta {
+    width: auto;
+    min-width: 12rem;
+  }
 }
 
