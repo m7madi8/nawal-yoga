@@ -42,7 +42,8 @@ export function useFormDraftSave<T extends { signature?: string }>(
 
     const id = window.setTimeout(() => {
       try {
-        const { signature: _s, ...rest } = data;
+        const rest = { ...data };
+        delete rest.signature;
         localStorage.setItem(
           key,
           JSON.stringify({ __step: step, data: { ...rest, signature: "" } }),
