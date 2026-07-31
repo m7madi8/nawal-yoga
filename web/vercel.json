@@ -1,0 +1,15 @@
+{
+  "framework": "nextjs",
+  "redirects": [
+    { "source": "/retreat-dahab.html", "destination": "/retreats/dahab", "permanent": true },
+    { "source": "/zanzibar-retreat-review-nw2606.html", "destination": "/retreats", "permanent": true },
+    { "source": "/retreat-wadi-rum.html", "destination": "/retreats", "permanent": true },
+    { "source": "/retreat.html", "destination": "/retreats", "permanent": true },
+    { "source": "/Zanzibar.html", "destination": "/retreats", "permanent": true },
+    { "source": "/mountain-voice-registration.html", "destination": "/register/mountain-voice", "permanent": true },
+    { "source": "/wadi-rum-registration.html", "destination": "/retreats", "permanent": true },
+    { "source": "/admin.html", "destination": "/admin/login", "permanent": true },
+    { "source": "/dashboard.html", "destination": "/admin", "permanent": true },
+    { "source": "/workshops/jiva.html", "destination": "/practice", "permanent": true }
+  ]
+}
