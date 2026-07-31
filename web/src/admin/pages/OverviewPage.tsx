@@ -9,7 +9,6 @@ import { EmptyState } from "@/admin/components/ui/EmptyState";
 import { Badge } from "@/admin/components/ui/Badge";
 import { RequestRow } from "@/admin/components/requests/RequestRow";
 import { RequestDetailModal } from "@/admin/components/requests/RequestDetailModal";
-import { MEDICAL_SOURCES, RETREAT_SOURCES } from "@/admin/lib/labels";
 import { loadRetreats, loadEvents } from "@/admin/lib/catalog";
 import type { RetreatRequest } from "@/admin/lib/types";
 
@@ -39,6 +38,15 @@ export function OverviewPage() {
         href: "/admin/retreats",
       });
     }
+    if (stats.yogaPending > 0 || stats.eventPending > 0) {
+      const n = stats.yogaPending + stats.eventPending;
+      list.push({
+        id: "cls",
+        title: `${n} class / event booking${n > 1 ? "s" : ""} pending`,
+        detail: "Haifa sessions and day gatherings.",
+        href: "/admin/events",
+      });
+    }
     const openRetreat = retreats.find((r) => r.status === "open");
     if (openRetreat) {
       list.push({
@@ -55,7 +63,11 @@ export function OverviewPage() {
     setBusy(true);
     try {
       await setStatus(r.id, r.status === "completed" ? "pending" : "completed");
-      setSelected((s) => (s?.id === r.id ? { ...s, status: s.status === "completed" ? "pending" : "completed" } : s));
+      setSelected((s) =>
+        s?.id === r.id
+          ? { ...s, status: s.status === "completed" ? "pending" : "completed" }
+          : s,
+      );
     } finally {
       setBusy(false);
     }
@@ -75,7 +87,7 @@ export function OverviewPage() {
     <div>
       <PageHeader
         title="Good morning"
-        description="A calm view of what needs your attention today."
+        description="Statistics and what needs your attention — across retreats, classes, and medical forms."
       />
 
       {error && (
@@ -84,11 +96,105 @@ export function OverviewPage() {
         </div>
       )}
 
+      <div className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <StatTile label="New this week" value={stats.newThisWeek} hint="Last 7 days" tone="olive" />
+        <StatTile label="Pending review" value={stats.pending} hint="All channels" tone="alert" />
+        <StatTile label="Reviewed" value={stats.completed} hint="Marked complete" />
+        <StatTile label="Total submissions" value={stats.total} hint="Lifetime" />
+      </div>
+
       <div className="mb-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <StatTile label="New this week" value={stats.newThisWeek} hint="All registrations" tone="olive" />
-        <StatTile label="Pending review" value={stats.pending} hint="Across every channel" tone="alert" />
-        <StatTile label="Medical forms" value={stats.medicalPending} hint="Privacy-sensitive" />
-        <StatTile label="Community size" value={stats.total} hint="Total submissions" />
+        <Link href="/admin/retreats" className="block transition hover:opacity-90">
+          <StatTile
+            label="Retreats"
+            value={stats.retreatTotal}
+            hint={`${stats.retreatPending} pending`}
+            tone={stats.retreatPending ? "alert" : "default"}
+          />
+        </Link>
+        <Link href="/admin/events" className="block transition hover:opacity-90">
+          <StatTile
+            label="Classes & events"
+            value={stats.yogaTotal + stats.eventTotal}
+            hint={`${stats.yogaPending + stats.eventPending} pending`}
+            tone={stats.yogaPending + stats.eventPending ? "alert" : "default"}
+          />
+        </Link>
+        <Link href="/admin/forms" className="block transition hover:opacity-90">
+          <StatTile
+            label="Medical forms"
+            value={stats.medicalTotal}
+            hint={`${stats.medicalPending} awaiting review`}
+            tone={stats.medicalPending ? "alert" : "default"}
+          />
+        </Link>
+        <Link href="/admin/students" className="block transition hover:opacity-90">
+          <StatTile label="Community" value={stats.total} hint="Unique + repeat registrations" tone="olive" />
+        </Link>
+      </div>
+
+      <div className="mb-8 grid gap-6 lg:grid-cols-5">
+        <Panel className="lg:col-span-3 overflow-hidden">
+          <div className="border-b border-[var(--border-soft)] px-5 py-4">
+            <h2 className="text-sm font-medium text-ink">Activity · last 7 days</h2>
+            <p className="mt-0.5 text-xs text-[var(--text-soft)]">New registrations per day</p>
+          </div>
+          <div className="flex h-44 items-end gap-2 px-5 py-5 sm:gap-3">
+            {stats.trend.map((t) => {
+              const h = Math.max(8, Math.round((t.count / stats.trendMax) * 100));
+              return (
+                <div key={t.day} className="flex min-w-0 flex-1 flex-col items-center gap-2">
+                  <span className="text-[0.65rem] tabular-nums text-[var(--text-soft)]">
+                    {t.count || ""}
+                  </span>
+                  <div className="flex w-full flex-1 items-end justify-center">
+                    <div
+                      className="w-full max-w-[2.25rem] rounded-t-md bg-olive/75 transition-all duration-500"
+                      style={{ height: `${h}%` }}
+                      title={`${t.label}: ${t.count}`}
+                    />
+                  </div>
+                  <span className="text-[0.65rem] text-[var(--text-soft)]">{t.label}</span>
+                </div>
+              );
+            })}
+          </div>
+        </Panel>
+
+        <Panel className="lg:col-span-2 overflow-hidden">
+          <div className="border-b border-[var(--border-soft)] px-5 py-4">
+            <h2 className="text-sm font-medium text-ink">By type</h2>
+            <p className="mt-0.5 text-xs text-[var(--text-soft)]">Share of all submissions</p>
+          </div>
+          {stats.bySource.length === 0 ? (
+            <div className="px-5 py-8">
+              <EmptyState title="No data yet" description="Breakdowns appear once forms arrive." />
+            </div>
+          ) : (
+            <ul className="max-h-52 divide-y divide-[var(--border-soft)] overflow-y-auto">
+              {stats.bySource.slice(0, 8).map((s) => {
+                const pct = stats.total ? Math.round((s.total / stats.total) * 100) : 0;
+                return (
+                  <li key={s.source} className="px-5 py-3">
+                    <div className="mb-1.5 flex items-center justify-between gap-2">
+                      <p className="truncate text-sm text-ink">{s.label}</p>
+                      <p className="shrink-0 text-xs tabular-nums text-[var(--text-soft)]">
+                        {s.total}
+                        {s.pending > 0 ? ` · ${s.pending} pending` : ""}
+                      </p>
+                    </div>
+                    <div className="h-1.5 overflow-hidden rounded-full bg-black/[0.05]">
+                      <div
+                        className="h-full rounded-full bg-olive/65"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </Panel>
       </div>
 
       <div className="mb-8 grid gap-6 lg:grid-cols-5">
@@ -141,12 +247,17 @@ export function OverviewPage() {
                     <p className="text-xs text-[var(--text-soft)]">
                       {r.startDate} · {r.location}
                     </p>
-                    <Badge tone={r.status === "open" ? "olive" : "neutral"}>{r.status.replace("_", " ")}</Badge>
+                    <Badge tone={r.status === "open" ? "olive" : "neutral"}>
+                      {r.status.replace("_", " ")}
+                    </Badge>
                   </div>
                 </li>
               ))}
             {events.map((e) => (
-              <li key={e.id} className="flex gap-3 border-b border-[var(--border-soft)] px-4 py-3 last:border-0">
+              <li
+                key={e.id}
+                className="flex gap-3 border-b border-[var(--border-soft)] px-4 py-3 last:border-0"
+              >
                 <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-stone">
                   <Image src={e.cover} alt="" fill className="object-cover" sizes="56px" />
                 </div>
@@ -165,12 +276,10 @@ export function OverviewPage() {
       <Panel>
         <div className="flex items-center justify-between border-b border-[var(--border-soft)] px-5 py-4">
           <h2 className="text-sm font-medium text-ink">Recent activity</h2>
-          <div className="flex gap-3 text-xs">
-            <span className="text-[var(--text-soft)]">
-              {rows.filter((r) => MEDICAL_SOURCES.includes(r.source)).length} medical ·{" "}
-              {rows.filter((r) => RETREAT_SOURCES.includes(r.source)).length} retreat
-            </span>
-          </div>
+          <span className="text-xs text-[var(--text-soft)]">
+            {stats.medicalTotal} medical · {stats.retreatTotal} retreat ·{" "}
+            {stats.yogaTotal + stats.eventTotal} classes
+          </span>
         </div>
         {loading ? (
           <p className="px-5 py-10 text-sm text-[var(--text-soft)]">Loading registrations…</p>

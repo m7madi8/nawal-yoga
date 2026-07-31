@@ -2,27 +2,23 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
-import { PageHeader, Panel } from "@/admin/components/ui/PageChrome";
+import { PageHeader } from "@/admin/components/ui/PageChrome";
 import { Badge } from "@/admin/components/ui/Badge";
 import { AdminButton } from "@/admin/components/ui/AdminButton";
-import { EmptyState } from "@/admin/components/ui/EmptyState";
 import { Modal } from "@/admin/components/ui/Modal";
 import { useAdminData } from "@/admin/components/shell/AdminShell";
-import { RequestRow } from "@/admin/components/requests/RequestRow";
-import { RequestDetailModal } from "@/admin/components/requests/RequestDetailModal";
+import { RequestsBoard } from "@/admin/components/requests/RequestsBoard";
 import { loadRetreats, saveRetreats } from "@/admin/lib/catalog";
 import { RETREAT_SOURCES } from "@/admin/lib/labels";
-import type { ManagedRetreat, RetreatRequest } from "@/admin/lib/types";
+import type { ManagedRetreat } from "@/admin/lib/types";
 
 export function RetreatsPage() {
-  const { rows, setStatus, remove } = useAdminData();
+  const { rows } = useAdminData();
   const [retreats, setRetreats] = useState<ManagedRetreat[]>(() => loadRetreats());
   const [editing, setEditing] = useState<ManagedRetreat | null>(null);
-  const [selected, setSelected] = useState<RetreatRequest | null>(null);
-  const [busy, setBusy] = useState(false);
 
   const requests = useMemo(
-    () => rows.filter((r) => RETREAT_SOURCES.includes(r.source)),
+    () => rows.filter((r) => RETREAT_SOURCES.includes(r.source as (typeof RETREAT_SOURCES)[number])),
     [rows],
   );
 
@@ -81,7 +77,7 @@ export function RetreatsPage() {
     <div>
       <PageHeader
         title="Retreats"
-        description="Dates, capacity, and the women who want to join."
+        description="Catalog, capacity, and every reservation — filter by destination and status."
         actions={
           <AdminButton variant="primary" onClick={addRetreat}>
             New retreat
@@ -113,9 +109,7 @@ export function RetreatsPage() {
                   {r.status.replace("_", " ")}
                 </Badge>
               </div>
-              <p className="text-sm text-[var(--text-soft)]">
-                {r.location || "Location TBD"}
-              </p>
+              <p className="text-sm text-[var(--text-soft)]">{r.location || "Location TBD"}</p>
               <p className="mt-1 text-sm text-[var(--text-soft)]">
                 {r.startDate || "—"} → {r.endDate || "—"}
               </p>
@@ -137,21 +131,17 @@ export function RetreatsPage() {
         ))}
       </div>
 
-      <Panel>
-        <div className="border-b border-[var(--border-soft)] px-5 py-4">
-          <h2 className="text-sm font-medium text-ink">Retreat reservations</h2>
-        </div>
-        {requests.length === 0 ? (
-          <div className="p-5">
-            <EmptyState
-              title="No retreat bookings yet"
-              description="Dahab, Zanzibar, and Wadi Rum requests will collect here."
-            />
-          </div>
-        ) : (
-          requests.map((r) => <RequestRow key={r.id} request={r} onOpen={setSelected} />)
-        )}
-      </Panel>
+      <RequestsBoard
+        title="Retreat reservations"
+        sources={[...RETREAT_SOURCES]}
+        sourceFilters={[
+          { id: "dahab", label: "Dahab", sources: ["dahab-retreat-reserve"] },
+          { id: "zanzibar", label: "Zanzibar", sources: ["zanzibar-retreat-reserve"] },
+          { id: "wadi-rum", label: "Wadi Rum", sources: ["wadi-rum-registration"] },
+        ]}
+        emptyTitle="No retreat bookings yet"
+        emptyDescription="Dahab, Zanzibar, and Wadi Rum requests will collect here."
+      />
 
       <Modal open={Boolean(editing)} onClose={() => setEditing(null)} title="Edit retreat">
         {editing && (
@@ -200,34 +190,6 @@ export function RetreatsPage() {
           </form>
         )}
       </Modal>
-
-      <RequestDetailModal
-        request={selected}
-        onClose={() => setSelected(null)}
-        onToggleStatus={async (r) => {
-          setBusy(true);
-          try {
-            await setStatus(r.id, r.status === "completed" ? "pending" : "completed");
-            setSelected((s) =>
-              s?.id === r.id
-                ? { ...s, status: s.status === "completed" ? "pending" : "completed" }
-                : s,
-            );
-          } finally {
-            setBusy(false);
-          }
-        }}
-        onDelete={async (r) => {
-          setBusy(true);
-          try {
-            await remove(r.id);
-            setSelected(null);
-          } finally {
-            setBusy(false);
-          }
-        }}
-        busy={busy}
-      />
     </div>
   );
 }

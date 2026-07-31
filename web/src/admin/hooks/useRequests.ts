@@ -2,10 +2,20 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { deleteRequest, fetchAllRequests, updateRequestStatus } from "@/admin/lib/api";
-import type { RetreatRequest, RequestStatus } from "@/admin/lib/types";
-import { MEDICAL_SOURCES, RETREAT_SOURCES, YOGA_SOURCES, phoneDigits } from "@/admin/lib/labels";
-import type { Student } from "@/admin/lib/types";
+import type { RetreatRequest, RequestStatus, Student } from "@/admin/lib/types";
+import {
+  EVENT_BOOKING_SOURCES,
+  MEDICAL_SOURCES,
+  RETREAT_SOURCES,
+  YOGA_SOURCES,
+  phoneDigits,
+  sourceLabel,
+} from "@/admin/lib/labels";
 import { loadStudentNotes } from "@/admin/lib/catalog";
+
+function dayKey(d: Date) {
+  return d.toISOString().slice(0, 10);
+}
 
 export function useRequests() {
   const [rows, setRows] = useState<RetreatRequest[]>([]);
@@ -44,26 +54,73 @@ export function useRequests() {
 
   const stats = useMemo(() => {
     const pending = rows.filter((r) => r.status === "pending").length;
-    const medicalPending = rows.filter(
-      (r) => r.status === "pending" && MEDICAL_SOURCES.includes(r.source),
-    ).length;
-    const retreatPending = rows.filter(
-      (r) => r.status === "pending" && RETREAT_SOURCES.includes(r.source),
-    ).length;
-    const yogaPending = rows.filter(
-      (r) => r.status === "pending" && YOGA_SOURCES.includes(r.source),
-    ).length;
+    const inList = (list: readonly string[], s: string) => list.includes(s);
+    const medical = rows.filter((r) => inList(MEDICAL_SOURCES, r.source));
+    const retreats = rows.filter((r) => inList(RETREAT_SOURCES, r.source));
+    const yoga = rows.filter((r) => inList(YOGA_SOURCES, r.source));
+    const events = rows.filter((r) => inList(EVENT_BOOKING_SOURCES, r.source));
+
+    const medicalPending = medical.filter((r) => r.status === "pending").length;
+    const retreatPending = retreats.filter((r) => r.status === "pending").length;
+    const yogaPending = yoga.filter((r) => r.status === "pending").length;
+    const eventPending = events.filter((r) => r.status === "pending").length;
+
     const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-    const newThisWeek = rows.filter((r) => new Date(r.submittedAt || r.createdAt).getTime() > weekAgo)
-      .length;
+    const newThisWeek = rows.filter(
+      (r) => new Date(r.submittedAt || r.createdAt).getTime() > weekAgo,
+    ).length;
+
+    const bySource: { source: string; label: string; total: number; pending: number }[] = [];
+    const sourceMap = new Map<string, { total: number; pending: number }>();
+    for (const r of rows) {
+      const cur = sourceMap.get(r.source) || { total: 0, pending: 0 };
+      cur.total += 1;
+      if (r.status === "pending") cur.pending += 1;
+      sourceMap.set(r.source, cur);
+    }
+    for (const [source, v] of sourceMap) {
+      bySource.push({
+        source,
+        label: sourceLabel(source),
+        total: v.total,
+        pending: v.pending,
+      });
+    }
+    bySource.sort((a, b) => b.total - a.total);
+
+    const trend: { day: string; label: string; count: number }[] = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setHours(12, 0, 0, 0);
+      d.setDate(d.getDate() - i);
+      const key = dayKey(d);
+      const count = rows.filter((r) => {
+        const t = new Date(r.submittedAt || r.createdAt);
+        return dayKey(t) === key;
+      }).length;
+      trend.push({
+        day: key,
+        label: new Intl.DateTimeFormat("en", { weekday: "short" }).format(d),
+        count,
+      });
+    }
+
     return {
       total: rows.length,
       pending,
-      medicalPending,
-      retreatPending,
-      yogaPending,
-      newThisWeek,
       completed: rows.length - pending,
+      medicalTotal: medical.length,
+      medicalPending,
+      retreatTotal: retreats.length,
+      retreatPending,
+      yogaTotal: yoga.length,
+      yogaPending,
+      eventTotal: events.length,
+      eventPending,
+      newThisWeek,
+      bySource,
+      trend,
+      trendMax: Math.max(1, ...trend.map((t) => t.count)),
     };
   }, [rows]);
 

@@ -2,33 +2,20 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
-import { PageHeader, Panel, FilterChips } from "@/admin/components/ui/PageChrome";
+import { PageHeader, FilterChips } from "@/admin/components/ui/PageChrome";
 import { Badge } from "@/admin/components/ui/Badge";
 import { AdminButton } from "@/admin/components/ui/AdminButton";
 import { EmptyState } from "@/admin/components/ui/EmptyState";
 import { Modal } from "@/admin/components/ui/Modal";
-import { useAdminData } from "@/admin/components/shell/AdminShell";
-import { RequestRow } from "@/admin/components/requests/RequestRow";
-import { RequestDetailModal } from "@/admin/components/requests/RequestDetailModal";
+import { RequestsBoard } from "@/admin/components/requests/RequestsBoard";
 import { loadEvents, saveEvents } from "@/admin/lib/catalog";
 import { EVENT_BOOKING_SOURCES, YOGA_SOURCES } from "@/admin/lib/labels";
-import type { ManagedEvent, RetreatRequest } from "@/admin/lib/types";
+import type { ManagedEvent } from "@/admin/lib/types";
 
 export function EventsPage() {
-  const { rows, setStatus, remove } = useAdminData();
   const [events, setEvents] = useState<ManagedEvent[]>(() => loadEvents());
   const [filter, setFilter] = useState("all");
   const [editing, setEditing] = useState<ManagedEvent | null>(null);
-  const [selected, setSelected] = useState<RetreatRequest | null>(null);
-  const [busy, setBusy] = useState(false);
-
-  const classRequests = useMemo(
-    () =>
-      rows.filter(
-        (r) => YOGA_SOURCES.includes(r.source) || EVENT_BOOKING_SOURCES.includes(r.source),
-      ),
-    [rows],
-  );
 
   const visible = useMemo(() => {
     if (filter === "all") return events;
@@ -57,11 +44,13 @@ export function EventsPage() {
     setEditing(null);
   }
 
+  const classSources = [...YOGA_SOURCES, ...EVENT_BOOKING_SOURCES];
+
   return (
     <div>
       <PageHeader
         title="Events & sessions"
-        description="Day gatherings, workshops, and the weekly Haifa rhythm."
+        description="Day gatherings, workshops, and Haifa classes — with filters for every registration."
         actions={
           <AdminButton
             variant="primary"
@@ -114,7 +103,11 @@ export function EventsPage() {
                 <h2 className="truncate font-display text-lg font-light text-ink sm:text-xl">
                   {e.title}
                 </h2>
-                <Badge tone={e.status === "sold_out" ? "alert" : e.status === "open" ? "olive" : "neutral"}>
+                <Badge
+                  tone={
+                    e.status === "sold_out" ? "alert" : e.status === "open" ? "olive" : "neutral"
+                  }
+                >
                   {e.status.replace("_", " ")}
                 </Badge>
               </div>
@@ -135,21 +128,17 @@ export function EventsPage() {
         )}
       </div>
 
-      <Panel>
-        <div className="border-b border-[var(--border-soft)] px-5 py-4">
-          <h2 className="text-sm font-medium text-ink">Class & event registrations</h2>
-        </div>
-        {classRequests.length === 0 ? (
-          <div className="p-5">
-            <EmptyState
-              title="No class requests"
-              description="Haifa yoga registrations will appear in this list."
-            />
-          </div>
-        ) : (
-          classRequests.map((r) => <RequestRow key={r.id} request={r} onOpen={setSelected} />)
-        )}
-      </Panel>
+      <RequestsBoard
+        title="Class & event registrations"
+        sources={classSources}
+        sourceFilters={[
+          { id: "haifa", label: "Haifa Yoga", sources: ["yoga-class-registration"] },
+          { id: "yoga", label: "Yoga class", sources: ["yoga-class-request"] },
+          { id: "ice", label: "Ice Bath booking", sources: ["ice-bath-registration"] },
+        ]}
+        emptyTitle="No class requests"
+        emptyDescription="Haifa yoga and event bookings will appear in this list."
+      />
 
       <Modal open={Boolean(editing)} onClose={() => setEditing(null)} title="Edit event">
         {editing && (
@@ -210,34 +199,6 @@ export function EventsPage() {
           </form>
         )}
       </Modal>
-
-      <RequestDetailModal
-        request={selected}
-        onClose={() => setSelected(null)}
-        onToggleStatus={async (r) => {
-          setBusy(true);
-          try {
-            await setStatus(r.id, r.status === "completed" ? "pending" : "completed");
-            setSelected((s) =>
-              s?.id === r.id
-                ? { ...s, status: s.status === "completed" ? "pending" : "completed" }
-                : s,
-            );
-          } finally {
-            setBusy(false);
-          }
-        }}
-        onDelete={async (r) => {
-          setBusy(true);
-          try {
-            await remove(r.id);
-            setSelected(null);
-          } finally {
-            setBusy(false);
-          }
-        }}
-        busy={busy}
-      />
     </div>
   );
 }
